@@ -18,6 +18,11 @@ namespace Server.Services
             _logger = logger;
             _dbWorker = dbWorker;
         }
+
+        public DbService(IDbWorker dbWorker)
+        {
+            _dbWorker = dbWorker;
+        }
         
         public DbService() {}
 

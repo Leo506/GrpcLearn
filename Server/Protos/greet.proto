@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package dbPackage;
+
+service DbService {
+  rpc GetUserByName (UserRequest) returns (UserReply);
+}
+
+message UserRequest {
+  string name = 1;
+}
+
+message UserReply {
+  string name = 1;
+  int32 age = 2;
+  string class = 3;
+  map<string, int32> Marks = 4;
+}

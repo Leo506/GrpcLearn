@@ -6,6 +6,7 @@ package dbPackage;
 
 service DbService {
   rpc GetUserByName (UserRequest) returns (UserReply);
+  rpc GetAllUsers (EmptyUserRequest) returns (UsersArrayReply);
 }
 
 message UserRequest {
@@ -17,4 +18,13 @@ message UserReply {
   int32 age = 2;
   string class = 3;
   map<string, int32> Marks = 4;
+}
+
+message EmptyUserRequest {
+  string database = 1;
+  string collection = 2;
+}
+
+message UsersArrayReply {
+  repeated UserReply users = 1;
 }

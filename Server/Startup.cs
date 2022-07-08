@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Server.Data;
 
 namespace Server
 {
@@ -16,6 +17,7 @@ namespace Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IDbWorker>(provider => new DbController("mongodb://localhost:40000"));
             services.AddGrpc();
         }
 
@@ -31,7 +33,7 @@ namespace Server
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<Services.DbService>();
 
                 endpoints.MapGet("/",
                     async context =>

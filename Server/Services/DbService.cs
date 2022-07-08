@@ -5,6 +5,7 @@ using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Server.Data;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Server.Services
 {
@@ -13,6 +14,7 @@ namespace Server.Services
         private readonly ILogger<DbService> _logger;
         private readonly IDbWorker _dbWorker;
 
+        [ActivatorUtilitiesConstructor]
         public DbService(ILogger<DbService> logger, IDbWorker dbWorker)
         {
             _logger = logger;
@@ -40,6 +42,9 @@ namespace Server.Services
 
         public override Task<UsersArrayReply> GetAllUsers(EmptyUserRequest request, ServerCallContext context)
         {
+            _dbWorker.Database = request.Database;
+            _dbWorker.Collection = request.Collection;
+            
             var result = _dbWorker.GetAllRecords<Person>().Result;
             var usersList = new List<UserReply>();
             foreach (var person in result)

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -12,6 +13,7 @@ namespace Server.Data
         
         private readonly string _connectionString;
 
+        [ActivatorUtilitiesConstructor]
         public DbController(string connectionString)
         {
             _connectionString = connectionString;

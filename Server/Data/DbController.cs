@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Server.Data
 {
-    public class DbController
+    public class DbController : IDbWorker
     {
         public string Database { get; set; }
         public string Collection { get; set; }

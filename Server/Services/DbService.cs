@@ -11,10 +11,12 @@ namespace Server.Services
     public class DbService : Server.DbService.DbServiceBase
     {
         private readonly ILogger<DbService> _logger;
+        private readonly IDbWorker _dbWorker;
 
-        public DbService(ILogger<DbService> logger)
+        public DbService(ILogger<DbService> logger, IDbWorker dbWorker)
         {
             _logger = logger;
+            _dbWorker = dbWorker;
         }
         
         public DbService() {}
@@ -33,11 +35,7 @@ namespace Server.Services
 
         public override Task<UsersArrayReply> GetAllUsers(EmptyUserRequest request, ServerCallContext context)
         {
-            var db = new DbController("mongodb://localhost:40000");
-            db.Database = request.Database;
-            db.Collection = request.Collection;
-
-            var result = db.GetAllRecords<Person>().Result;
+            var result = _dbWorker.GetAllRecords<Person>().Result;
             var usersList = new List<UserReply>();
             foreach (var person in result)
             {

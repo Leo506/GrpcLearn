@@ -29,27 +29,16 @@ namespace Server.Services
         public DbService() {}
 
 
-        public override Task<UserReply> GetUserByName(UserRequest request, ServerCallContext context)
-        {
-            return Task.FromResult(new UserReply()
-            {
-                Name = "Test",
-                Age = 20,
-                Class = "2b",
-                Marks = { { "c++", 20 } }
-            });
-        }
-
         public override Task<UsersArrayReply> GetAllUsers(EmptyUserRequest request, ServerCallContext context)
         {
             _dbWorker.Database = request.Database;
             _dbWorker.Collection = request.Collection;
             
             var result = _dbWorker.GetAllRecords<Person>().Result;
-            var usersList = new List<UserReply>();
+            var usersList = new List<User>();
             foreach (var person in result)
             {
-                var toAdd = new UserReply()
+                var toAdd = new User()
                 {
                     Name = person.Name,
                     Age = person.Age,
@@ -65,6 +54,19 @@ namespace Server.Services
             respones.Users.Add(usersList);
 
             return Task.FromResult(respones);
+        }
+
+        public override Task<StatusReply> AddNewUser(User request, ServerCallContext context)
+        {
+            _dbWorker.Database = "test";
+            _dbWorker.Collection = "users";
+
+            var result = _dbWorker.AddNewRecord<Person>(request.ToPerson()).Result;
+
+            return Task.FromResult(new StatusReply()
+            {
+                Status = result ? StatusReply.Types.Status.Ok : StatusReply.Types.Status.Error
+            });
         }
     }
 }

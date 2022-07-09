@@ -35,6 +35,16 @@ namespace ServerTests
             
             Assert.AreEqual(DataForTests.Persons, result.ToArray());
         }
+
+
+        [Test]
+        public void AddNewRecordSuccess()
+        {
+            var service = new DbService(new TestDbWorker(DataForTests.Persons));
+            var reply = service.AddNewUser(new User(), null).Result;
+            
+            Assert.AreEqual(StatusReply.Types.Status.Ok, reply.Status);
+        }
     }
 }
 
@@ -42,7 +52,7 @@ class TestDbWorker : IDbWorker
 {
     public Task<bool> AddNewRecord<T>(T itemToAdd)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(true);
     }
 
     public string Database { get; set; }

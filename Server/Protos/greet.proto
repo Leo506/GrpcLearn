@@ -5,15 +5,11 @@ option csharp_namespace = "Server";
 package dbPackage;
 
 service DbService {
-  rpc GetUserByName (UserRequest) returns (UserReply);
   rpc GetAllUsers (EmptyUserRequest) returns (UsersArrayReply);
+  rpc AddNewUser (User) returns (StatusReply);
 }
 
-message UserRequest {
-  string name = 1;
-}
-
-message UserReply {
+message User {
   string name = 1;
   int32 age = 2;
   string class = 3;
@@ -26,5 +22,15 @@ message EmptyUserRequest {
 }
 
 message UsersArrayReply {
-  repeated UserReply users = 1;
+  repeated User users = 1;
+}
+
+message StatusReply {
+  enum Status {
+    OK = 0;
+    ERROR = 1;
+    NONE = 2;
+  }
+  
+  Status status = 1;
 }

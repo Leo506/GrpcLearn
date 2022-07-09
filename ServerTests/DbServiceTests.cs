@@ -40,6 +40,11 @@ namespace ServerTests
 
 class TestDbWorker : IDbWorker
 {
+    public Task<bool> AddNewRecord<T>(T itemToAdd)
+    {
+        throw new NotImplementedException();
+    }
+
     public string Database { get; set; }
     public string Collection { get; set; }
  

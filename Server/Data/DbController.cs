@@ -21,9 +21,7 @@ namespace Server.Data
 
         public async Task<T[]> GetAllRecords<T>()
         {
-            var client = new MongoClient(_connectionString);
-            var database = client.GetDatabase(Database);
-            var collection = database.GetCollection<T>(Collection);
+            var collection = GetCollection<T>();
 
             var countOfDocuments = await collection.CountDocumentsAsync(new BsonDocument());
             var result = new T[countOfDocuments];
@@ -40,6 +38,22 @@ namespace Server.Data
             }
 
             return result;
+        }
+
+        public async Task<bool> AddNewRecord<T>(T itemToAdd)
+        {
+            var collection = GetCollection<T>();
+
+            await collection.InsertOneAsync(itemToAdd);
+
+            return true;
+        }
+
+        private IMongoCollection<T> GetCollection<T>()
+        {
+            var client = new MongoClient(_connectionString);
+            var database = client.GetDatabase(Database);
+            return database.GetCollection<T>(Collection);
         }
     }
 }

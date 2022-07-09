@@ -8,5 +8,6 @@ namespace Server.Data
         string Database { get; set; }
         string Collection { get; set; }
         Task<T[]> GetAllRecords<T>();
+        Task<bool> AddNewRecord<T>(T itemToAdd);
     }
 }

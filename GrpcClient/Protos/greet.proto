@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcClient";
+
+package dbPackage;
+
+service DbService {
+  rpc GetAllUsers (EmptyUserRequest) returns (UsersArrayReply);
+  rpc AddNewUser (User) returns (StatusReply);
+}
+
+message User {
+  string name = 1;
+  int32 age = 2;
+  string class = 3;
+  map<string, int32> Marks = 4;
+}
+
+message EmptyUserRequest {
+  string database = 1;
+  string collection = 2;
+}
+
+message UsersArrayReply {
+  repeated User users = 1;
+}
+
+message StatusReply {
+  enum Status {
+    OK = 0;
+    ERROR = 1;
+    NONE = 2;
+  }
+  
+  Status status = 1;
+}

@@ -13,35 +13,9 @@ namespace ServerTests
             db.Database = "test";
             db.Collection = "users";
 
-            var expected = new Person[]
-            {
-                new Person()
-                {
-                    Name = "Tommi",
-                    Age = 20,
-                    Class = "2b",
-                    Marks = new Dictionary<string, int>()
-                    {
-                        { "c++", 5 },
-                        { "python", 4 }
-                    }
-                },
-                new Person()
-                {
-                    Name = "Kate",
-                    Age = 20,
-                    Class = "2b",
-                    Marks = new Dictionary<string, int>()
-                    {
-                        {"c++", 3},
-                        {"python", 5}
-                    }
-                }
-            };
-
             var result = db.GetAllRecords<Person>().Result;
             
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(DataForTests.Persons, result);
         }
     }
 }

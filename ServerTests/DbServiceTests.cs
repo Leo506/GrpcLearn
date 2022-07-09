@@ -13,44 +13,10 @@ namespace ServerTests
 {
     public class DbServiceTests
     {
-        private Person[] _persons;
-
-        [SetUp]
-        public void Setup()
-        {
-            _persons = new[]
-            {
-                new Person()
-                {
-                    Name = "Tommi",
-                    Age = 20,
-                    Class = "2b",
-                    Marks = new Dictionary<string, int>()
-                    {
-                        { "c++", 5 },
-                        { "python", 4 }
-                    }
-                },
-                new Person()
-                {
-                    Name = "Kate",
-                    Age = 20,
-                    Class = "2b",
-                    Marks = new Dictionary<string, int>()
-                    {
-                        { "c++", 3 },
-                        { "python", 5 }
-                    }
-                }
-            };
-        }
-        
-        
-        
         [Test]
         public void GetAllUsersSuccess()
         {
-            var service = new DbService(new TestDbWorker(_persons));
+            var service = new DbService(new TestDbWorker(DataForTests.Persons));
 
             Console.WriteLine(default(Person));
             var reply = service.GetAllUsers(new EmptyUserRequest(), null).Result;
@@ -67,13 +33,16 @@ namespace ServerTests
                 });
             }
             
-            Assert.AreEqual(_persons, result.ToArray());
+            Assert.AreEqual(DataForTests.Persons, result.ToArray());
         }
     }
 }
 
 class TestDbWorker : IDbWorker
 {
+    public string Database { get; set; }
+    public string Collection { get; set; }
+ 
     private readonly Person[] _persons;
 
     public TestDbWorker(Person[] persons)
@@ -90,4 +59,5 @@ class TestDbWorker : IDbWorker
 
         return Task.FromResult(toReturn);
     }
+
 }
